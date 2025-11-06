@@ -26,4 +26,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: operator_wrapper_${{ matrix.goos }}_${{ matrix.goarch }}
-          path: binaries/operator_wrapper_${{ matrix.goos }}_${{ matrix.goarch }}
+          path: ${{ matrix.goos == 'windows' && format('binaries/operator_wrapper_{0}_{1}.exe', matrix.goos, matrix.goarch) || format('binaries/operator_wrapper_{0}_{1}', matrix.goos, matrix.goarch) }}
