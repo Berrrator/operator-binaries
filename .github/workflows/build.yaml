@@ -27,3 +27,19 @@ jobs:
         with:
           name: operator_wrapper_${{ matrix.goos }}_${{ matrix.goarch }}
           path: ${{ matrix.goos == 'windows' && format('binaries/operator_wrapper_{0}_{1}.exe', matrix.goos, matrix.goarch) || format('binaries/operator_wrapper_{0}_{1}', matrix.goos, matrix.goarch) }}
+
+release:
+  needs: build
+  runs-on: ubuntu-latest
+  steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: binaries
+
+    - name: Publish GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: binaries/**
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
